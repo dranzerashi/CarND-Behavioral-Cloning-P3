@@ -2,6 +2,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Flatten, Lambda
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
+from keras.layers import Cropping2D
 import gc;
 import csv
 import numpy as np
@@ -52,14 +53,15 @@ def batch_generator(samples, batch_size=32):
             yield shuffle(x_train , y_train)
 
 
-train_generator = batch_generator(training_samples, batch_size=32)
-validation_generator = batch_generator(validation_samples, batch_size=32)
+train_generator = batch_generator(training_samples, batch_size=128)
+validation_generator = batch_generator(validation_samples, batch_size=128)
 
 ch, row, col = 3, 80, 320  # Trimmed image format
 # print(next(train_generator)[0].shape)
 
 model = Sequential()
-model.add(Lambda(lambda x: (x/255.0)-0.5,input_shape=(160, 320, 3),output_shape=(160, 320, 3)))
+model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160, 320, 3)))
+model.add(Lambda(lambda x: (x/255.0)-0.5,output_shape=(90, 320, 3)))
 model.add(Flatten())
 model.add(Dense(1))
 
