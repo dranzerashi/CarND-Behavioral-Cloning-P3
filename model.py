@@ -34,17 +34,35 @@ def batch_generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                file_path = image_dir + batch_sample[0].split('/')[-1]
-                center_image = cv2.imread(file_path)
+                file_path_center = image_dir + batch_sample[0].split('/')[-1]
+                file_path_left = image_dir + batch_sample[1].split('/')[-1]
+                file_path_right = image_dir + batch_sample[2].split('/')[-1]
+                center_image = cv2.imread(file_path_center)
                 center_angle = float(batch_sample[3])
+                right_image = cv2.imread(file_path_right)
+                right_angle = float(batch_sample[3])
+                left_image = cv2.imread(file_path_left)
+                left_angle = float(batch_sample[3])
                 # print(center_image.shape)
                 images.append(center_image)
                 angles.append(center_angle)
+                images.append(right_image)
+                angles.append(right_angle)
+                images.append(left_image)
+                angles.append(left_angle)
 
                 center_image_flipped = np.fliplr(center_image)
                 center_angle_flipped = -center_angle
+                right_image_flipped = np.fliplr(right_image)
+                right_angle_flipped = -right_angle
+                left_image_flipped = np.fliplr(left_image)
+                left_angle_flipped = -left_angle
                 images.append(center_image_flipped)
                 angles.append(center_angle_flipped)
+                images.append(right_image_flipped)
+                angles.append(right_angle_flipped)
+                images.append(left_image_flipped)
+                angles.append(left_angle_flipped)
 
 
             x_train = np.array(images)
@@ -75,5 +93,5 @@ model.add(Dense(1))
 
 model.compile(optimizer="adam", loss="mse")
 model.summary()
-model.fit_generator(train_generator, samples_per_epoch=len(training_samples)*2, validation_data=validation_generator, nb_val_samples=len(validation_samples)*2,nb_epoch=5)
+model.fit_generator(train_generator, samples_per_epoch=len(training_samples)*6, validation_data=validation_generator, nb_val_samples=len(validation_samples)*6,nb_epoch=5)
 model.save('model.h5')
