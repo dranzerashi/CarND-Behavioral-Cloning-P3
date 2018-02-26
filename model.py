@@ -53,8 +53,8 @@ def batch_generator(samples, batch_size=32):
             yield shuffle(x_train , y_train)
 
 
-train_generator = batch_generator(training_samples, batch_size=128)
-validation_generator = batch_generator(validation_samples, batch_size=128)
+train_generator = batch_generator(training_samples, batch_size=64)
+validation_generator = batch_generator(validation_samples, batch_size=64)
 
 ch, row, col = 3, 80, 320  # Trimmed image format
 # print(next(train_generator)[0].shape)
