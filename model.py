@@ -34,15 +34,16 @@ def batch_generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
+                correction = 0.2
                 file_path_center = image_dir + batch_sample[0].split('/')[-1]
                 file_path_left = image_dir + batch_sample[1].split('/')[-1]
                 file_path_right = image_dir + batch_sample[2].split('/')[-1]
                 center_image = cv2.imread(file_path_center)
                 center_angle = float(batch_sample[3])
                 right_image = cv2.imread(file_path_right)
-                right_angle = float(batch_sample[3])
+                right_angle = float(batch_sample[3]) - correction
                 left_image = cv2.imread(file_path_left)
-                left_angle = float(batch_sample[3])
+                left_angle = float(batch_sample[3]) + correction
                 # print(center_image.shape)
                 images.append(center_image)
                 angles.append(center_angle)
