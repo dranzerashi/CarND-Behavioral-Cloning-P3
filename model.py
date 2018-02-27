@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Dense, Flatten, Lambda
+from keras.layers import Dense, Flatten, Lambda, Dropout
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
 
@@ -90,11 +90,13 @@ model.add(Convolution2D(36, 5, 5, border_mode='valid', activation='relu', subsam
 model.add(Convolution2D(48, 5, 5, border_mode='valid', activation='relu', subsample=(2, 2)))
 model.add(Convolution2D(64, 3, 3, border_mode='valid', activation='relu', subsample=(1, 1)))
 model.add(Convolution2D(64, 3, 3, border_mode='valid', activation='relu', subsample=(1, 1)))
-model.add(MaxPooling2D())
+#model.add(MaxPooling2D())
 model.add(Flatten())
 model.add(Dense(100, activation="elu"))
+model.add(Dropout(0.5))
 model.add(Dense(50, activation="elu"))
-model.add(Dense(10, activation="elu"))
+model.add(Dropout(0.5))
+model.add(Dense(10))
 model.add(Dense(1))
 
 model.compile(optimizer="adam", loss="mse")
