@@ -34,7 +34,7 @@ def batch_generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                correction = 1
+                correction = 0.5
                 file_path_center = image_dir + batch_sample[0].split('/')[-1]
                 file_path_left = image_dir + batch_sample[1].split('/')[-1]
                 file_path_right = image_dir + batch_sample[2].split('/')[-1]
@@ -95,5 +95,5 @@ model.add(Dense(1))
 
 model.compile(optimizer="adam", loss="mse")
 model.summary()
-model.fit_generator(train_generator, samples_per_epoch=len(training_samples)*6, validation_data=validation_generator, nb_val_samples=len(validation_samples)*6,nb_epoch=10)
+model.fit_generator(train_generator, samples_per_epoch=len(training_samples)*6, validation_data=validation_generator, nb_val_samples=len(validation_samples)*6,nb_epoch=15)
 model.save('model.h5')
