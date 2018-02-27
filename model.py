@@ -2,13 +2,13 @@ from keras.models import Sequential
 from keras.layers import Dense, Flatten, Lambda
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
+
 from keras.layers import Cropping2D
 import gc;
 import csv
 import numpy as np
 import cv2
-
-
+from sklearn.linear_model import ElasticNet
 
 image_dir = './data/IMG/'
 samples = []
@@ -90,9 +90,9 @@ model.add(MaxPooling2D())
 model.add(Convolution2D(64, 3, 3, activation="elu"))
 model.add(MaxPooling2D())
 model.add(Flatten())
-model.add(Dense(100))
-model.add(Dense(50))
-model.add(Dense(10))
+model.add(Dense(100, activation="elu"))
+model.add(Dense(50, activation="elu"))
+model.add(Dense(10, activation="elu"))
 model.add(Dense(1))
 
 model.compile(optimizer="adam", loss="mse")
