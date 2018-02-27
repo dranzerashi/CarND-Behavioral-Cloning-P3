@@ -34,7 +34,7 @@ def batch_generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                correction = 4
+                correction = 1
                 file_path_center = image_dir + batch_sample[0].split('/')[-1]
                 file_path_left = image_dir + batch_sample[1].split('/')[-1]
                 file_path_right = image_dir + batch_sample[2].split('/')[-1]
