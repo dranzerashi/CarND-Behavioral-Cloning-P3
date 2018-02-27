@@ -23,6 +23,10 @@ from sklearn.utils import shuffle
 
 training_samples, validation_samples = train_test_split(samples,test_size=0.2)
 
+def read_image(filename):
+    img = cv2.imread(filename)
+    return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
 
 def batch_generator(samples, batch_size=32):
     num_samples = len(samples)
@@ -38,11 +42,11 @@ def batch_generator(samples, batch_size=32):
                 file_path_center = image_dir + batch_sample[0].split('/')[-1]
                 file_path_left = image_dir + batch_sample[1].split('/')[-1]
                 file_path_right = image_dir + batch_sample[2].split('/')[-1]
-                center_image = cv2.imread(file_path_center)
+                center_image = read_image(file_path_center)
                 center_angle = float(batch_sample[3])
-                right_image = cv2.imread(file_path_right)
+                right_image = read_image(file_path_right)
                 right_angle = float(batch_sample[3]) - correction
-                left_image = cv2.imread(file_path_left)
+                left_image = read_image(file_path_left)
                 left_angle = float(batch_sample[3]) + correction
                 # print(center_image.shape)
                 images.append(center_image)
@@ -54,16 +58,16 @@ def batch_generator(samples, batch_size=32):
 
                 center_image_flipped = np.fliplr(center_image)
                 center_angle_flipped = -center_angle
-                right_image_flipped = np.fliplr(right_image)
-                right_angle_flipped = -right_angle
-                left_image_flipped = np.fliplr(left_image)
-                left_angle_flipped = -left_angle
+                # right_image_flipped = np.fliplr(right_image)
+                # right_angle_flipped = -right_angle
+                # left_image_flipped = np.fliplr(left_image)
+                # left_angle_flipped = -left_angle
                 images.append(center_image_flipped)
                 angles.append(center_angle_flipped)
-                images.append(right_image_flipped)
-                angles.append(right_angle_flipped)
-                images.append(left_image_flipped)
-                angles.append(left_angle_flipped)
+                # images.append(right_image_flipped)
+                # angles.append(right_angle_flipped)
+                # images.append(left_image_flipped)
+                # angles.append(left_angle_flipped)
 
 
             x_train = np.array(images)
@@ -95,5 +99,5 @@ model.add(Dense(1))
 
 model.compile(optimizer="adam", loss="mse")
 model.summary()
-model.fit_generator(train_generator, samples_per_epoch=len(training_samples)*6, validation_data=validation_generator, nb_val_samples=len(validation_samples)*6,nb_epoch=15)
+model.fit_generator(train_generator, samples_per_epoch=len(training_samples)*4, validation_data=validation_generator, nb_val_samples=len(validation_samples)*4, nb_epoch=15)
 model.save('model.h5')
